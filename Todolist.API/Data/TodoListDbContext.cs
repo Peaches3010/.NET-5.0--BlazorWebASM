@@ -11,7 +11,7 @@ namespace Todolist.API.Data
         public TodoListDbContext( DbContextOptions<TodoListDbContext> options) : base(options)
         {
         }
-        public DbSet<ToDoTask> ToDoTasks { set; get; }
+        public DbSet<TodoTask> ToDoTasks { set; get; }
 
     }
 }

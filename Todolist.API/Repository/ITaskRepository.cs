@@ -8,15 +8,15 @@ namespace Todolist.API.Repository
 {
     public interface ITaskRepository
     {
-        Task<IEnumerable<ToDoTask>> GetTaskList();
+        Task<IEnumerable<TodoTask>> GetTaskList();
 
-        Task<ToDoTask> Create(ToDoTask toDoTask);
+        Task<TodoTask> Create(TodoTask toDoTask);
 
-        Task<ToDoTask> Update(ToDoTask toDoTask);
+        Task<TodoTask> Update(TodoTask toDoTask);
 
-        Task<ToDoTask> Delete(ToDoTask toDoTask);
+        Task<TodoTask> Delete(TodoTask toDoTask);
 
-        Task<ToDoTask> GetTaskById(Guid id);
+        Task<TodoTask> GetTaskById(Guid id);
 
     }
 }

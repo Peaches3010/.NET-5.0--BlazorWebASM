@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Todolist.API.Data;
+
 using Todolist.API.Repository;
 
 namespace Todolist.API
@@ -39,6 +40,8 @@ namespace Todolist.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todolist.API", Version = "v1" });
             });
+
+           
 
             // Add DI
             services.AddTransient<ITaskRepository, TaskRepository>();
