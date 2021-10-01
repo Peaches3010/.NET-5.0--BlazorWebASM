@@ -33,7 +33,7 @@ namespace Todolist.API.Data
             }
             if (!context.ToDoTasks.Any())
             {
-                context.ToDoTasks.Add(new Entities.ToDoTask()
+                context.ToDoTasks.Add(new Entities.TodoTask()
                 {
                     Id = Guid.NewGuid(),
                     Name= "Task 1",

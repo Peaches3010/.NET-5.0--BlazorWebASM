@@ -5,7 +5,7 @@ using Todolist.Share.Enum;
 
 namespace Todolist.API.Entities
 {
-    public class ToDoTask
+    public class TodoTask
     {
         [Key]
         public Guid Id { get; set; }

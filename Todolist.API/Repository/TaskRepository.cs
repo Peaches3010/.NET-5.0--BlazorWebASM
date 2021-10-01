@@ -19,14 +19,14 @@ namespace Todolist.API.Repository
         }
 
 
-        public async Task<ToDoTask> Create(ToDoTask toDoTask)
+        public async Task<TodoTask> Create(TodoTask toDoTask)
         {
             await _context.ToDoTasks.AddAsync(toDoTask);
             await _context.SaveChangesAsync();
             return toDoTask;
         }
 
-        public async Task<ToDoTask> Delete(ToDoTask toDoTask)
+        public async Task<TodoTask> Delete(TodoTask toDoTask)
         {
              _context.ToDoTasks.Remove(toDoTask);
             await _context.SaveChangesAsync();
@@ -34,13 +34,13 @@ namespace Todolist.API.Repository
 
         }
 
-        public async Task<ToDoTask> GetTaskById(Guid id)
+        public async Task<TodoTask> GetTaskById(Guid id)
          => await _context.ToDoTasks.FindAsync(id);
 
-        public async Task<IEnumerable<ToDoTask>> GetTaskList()
+        public async Task<IEnumerable<TodoTask>> GetTaskList()
          => await _context.ToDoTasks.ToListAsync();
 
-        public async Task<ToDoTask> Update(ToDoTask toDoTask)
+        public async Task<TodoTask> Update(TodoTask toDoTask)
         {
              _context.ToDoTasks.Update(toDoTask);
             await _context.SaveChangesAsync();
