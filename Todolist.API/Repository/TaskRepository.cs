@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Todolist.API.Data;
 using Todolist.API.Entities;
+using TodoList.Share;
+using TodoList.Share.SeedWork;
 
 namespace Todolist.API.Repository
 {
@@ -17,7 +19,6 @@ namespace Todolist.API.Repository
         {
             _context = context;
         }
-
 
         public async Task<TodoTask> Create(TodoTask toDoTask)
         {
@@ -37,8 +38,55 @@ namespace Todolist.API.Repository
         public async Task<TodoTask> GetTaskById(Guid id)
          => await _context.ToDoTasks.FindAsync(id);
 
-        public async Task<IEnumerable<TodoTask>> GetTaskList()
-         => await _context.ToDoTasks.ToListAsync();
+        public async Task<PagedList<TodoTask>> GetTaskByUserId(Guid userId, TaskListSearch taskListSearch)
+        {
+            var query = _context.ToDoTasks
+                                .Where(x=>x.AssigneeId== userId)
+                                .Include(x => x.Assignee)
+                                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(taskListSearch.Name))
+                query = query.Where(x => x.Name.Contains(taskListSearch.Name));
+
+            if (taskListSearch.AssigneeId.HasValue)
+                query = query.Where(x => x.AssigneeId == taskListSearch.AssigneeId.Value);
+
+            if (taskListSearch.Priority.HasValue)
+                query = query.Where(x => x.Priority == taskListSearch.Priority.Value);
+
+            var count = await query.CountAsync();
+
+            var data = await query.OrderByDescending(x => x.CreatedDate)
+                             .Skip((taskListSearch.PageNumber - 1) * taskListSearch.PageSize)
+                             .Take(taskListSearch.PageSize)
+                             .ToListAsync();
+            return new PagedList<TodoTask>(data, count, taskListSearch.PageNumber, taskListSearch.PageSize);
+
+        }
+
+        public async Task<PagedList<TodoTask>> GetTaskList(TaskListSearch taskListSearch)
+        {
+            var query = _context.ToDoTasks.Include(x => x.Assignee).AsQueryable();
+
+            if (!string.IsNullOrEmpty(taskListSearch.Name))
+                query = query.Where(x => x.Name.Contains(taskListSearch.Name));
+
+            if(taskListSearch.AssigneeId.HasValue)
+                query = query.Where(x => x.AssigneeId == taskListSearch.AssigneeId.Value);
+
+            if (taskListSearch.Priority.HasValue)
+                query = query.Where(x => x.Priority == taskListSearch.Priority.Value);
+
+            var count = await query.CountAsync();
+
+            var data = await query.OrderByDescending(x => x.CreatedDate)
+                             .Skip((taskListSearch.PageNumber - 1) * taskListSearch.PageSize)
+                             .Take(taskListSearch.PageSize)
+                             .ToListAsync();
+            return new PagedList<TodoTask>(data,count,taskListSearch.PageNumber,taskListSearch.PageSize);
+              
+        }
+         
 
         public async Task<TodoTask> Update(TodoTask toDoTask)
         {

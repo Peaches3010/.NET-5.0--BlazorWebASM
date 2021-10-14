@@ -16,8 +16,6 @@ namespace Todolist.API.Entities
 
         public Guid? AssigneeId { get; set; }
 
-        public int MyProperty { get; set; }
-
         public DateTime CreatedDate { get; set; }
 
         public Priority Priority { get; set; }
