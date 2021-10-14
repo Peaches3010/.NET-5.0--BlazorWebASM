@@ -1,0 +1,55 @@
+﻿@page "/login"
+@using TodoList.Share;
+@using TodolistBlazorWebasm.Services;
+
+
+@inject NavigationManager navigationManager;
+@inject IAuthServices authServices;
+@if (ShowErrors) { 
+}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Login</h5>
+        <EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary></ValidationSummary>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <InputText id="username" class="form-control" @bind-Value="loginRequest.UserName"></InputText>
+                <ValidationMessage For="() => loginRequest.UserName"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <InputText id="password" class="form-control" @bind-Value="loginRequest.Password"></InputText>
+                <ValidationMessage For="() => loginRequest.Password"></ValidationMessage>
+            </div>
+            <button type="submit" class="btn btn-success">Login</button>
+        </EditForm>
+     </div>
+
+</div>
+
+@code {
+
+    private bool ShowErrors;
+    private string Error ="";
+
+
+    private LoginRequest loginRequest = new LoginRequest();
+
+    private async Task HandleLogin()
+    {
+        ShowErrors = false;
+
+        var result = await authServices.Login(loginRequest);
+        if(result.Successfull)
+        {
+            navigationManager.NavigateTo("/TaskList");
+        }
+        else
+        {
+            ShowErrors = true;
+            Error = result.Error;
+        }
+    }
+}

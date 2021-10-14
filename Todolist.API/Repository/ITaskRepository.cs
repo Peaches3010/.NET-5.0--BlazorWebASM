@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Todolist.API.Entities;
+using TodoList.Share;
+using TodoList.Share.SeedWork;
 
 namespace Todolist.API.Repository
 {
     public interface ITaskRepository
     {
-        Task<IEnumerable<TodoTask>> GetTaskList();
+        Task<PagedList<TodoTask>> GetTaskList(TaskListSearch taskListSearch );
+
+        Task<PagedList<TodoTask>> GetTaskByUserId(Guid userId,TaskListSearch taskListSearch);
 
         Task<TodoTask> Create(TodoTask toDoTask);
 

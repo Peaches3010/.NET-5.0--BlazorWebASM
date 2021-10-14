@@ -1,0 +1,36 @@
+﻿@page "/taskDetail/{TaskId}"
+
+@using TodolistBlazorWebasm.Components;
+
+
+@if (taskDetails == null)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    <h3>Task @taskDetails.Name</h3>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>@taskDetails.Name</td>
+        </tr>
+        <tr>
+            <td>Assignee</td>
+            <td>@taskDetails.AssigneeName</td>
+        </tr>
+        <tr>
+            <td>Priority</td>
+            <td>@taskDetails.Priority</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>@taskDetails.CreatedDate</td>
+        </tr>
+        <tr>
+            <td>Satus</td>
+            <td>@taskDetails.Status</td>
+        </tr>
+    </table>
+
+}

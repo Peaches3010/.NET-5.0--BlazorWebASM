@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Todolist.Share.Enum;
 
 namespace TodoList.Share
@@ -16,6 +17,7 @@ namespace TodoList.Share
 
         public DateTime CreatedDate { get; set; }
 
+        [Required(ErrorMessage = "Please select your task priority")]
         public Priority Priority { get; set; }
 
         public Status Status { get; set; }

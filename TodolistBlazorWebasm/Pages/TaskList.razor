@@ -1,0 +1,65 @@
+﻿@page "/TaskList"
+
+@using TodolistBlazorWebasm.Components;
+@using TodolistBlazorWebasm.Pages.Components;
+
+@inject IConfiguration configuration
+
+<h3>Task List</h3>
+
+@if (TodoTasks == null)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    <div class="row">
+        <TaskSearch OnSearch="SearchTask"></TaskSearch>
+    </div>
+    <div class="row mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Assignee</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in TodoTasks)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td><PriorityLable Priority="item.Priority"></PriorityLable></td>
+                        <td><a style="cursor:pointer;" @onclick="()=> OpenAssignPopup(item.Id)">@item.AssigneeName</a></td>
+                        <td>@item.CreatedDate.ToString(configuration["DateTimeFormat"])</td>
+                        <td><StatusLable Status="item.Status"></StatusLable></td>
+                        <td>
+                            <a href="/taskDetail/@item.Id" class="btn btn-primary">Detail</a>
+                        </td>
+                        <td>
+                            <a href="/taskEdit/@item.Id" class="btn btn-info">Edit</a>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="() => OnDeleteTask(item.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage"></Pagination>
+            </tfoot>
+        </table>
+    </div>
+    <Confirmation ConfirmationMessage="Are you sure ?"
+                  ConfirmationTitle="Delete Task"
+                  @ref="DeleteConfirmation"
+                  ConfirmationChanged="OnConfirmDeleteTask">
+    </Confirmation>
+    <AssignTask @ref="AssignTaskDialog" CloseEventCallback="AssignTaskSuccess"></AssignTask>
+}
+
+
